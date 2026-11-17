@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Робот Байт и тайны Интернета — интерактивное занятие</title>
+<style>
+:root{--bg:#0b1020;--panel:#151e35;--panel2:#1c2947;--ink:#eef4ff;--muted:#aebbd4;--cyan:#5de1e6;--blue:#7598ff;--gold:#ffd166;--green:#75e0a2;--red:#ff8292;--line:#31405f}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,#243c68 0,transparent 35%),var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,sans-serif}
+button{font:inherit;cursor:pointer}.shell{max-width:1120px;margin:auto;padding:22px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.brand{font-weight:850;letter-spacing:.3px}.brand span{color:var(--cyan)}.stats{display:flex;gap:10px;flex-wrap:wrap}.pill{background:#202d4a;border:1px solid var(--line);padding:7px 12px;border-radius:999px;color:var(--muted);font-size:14px}.pill b{color:var(--gold)}
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;padding:35px 0 25px}.hero h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.08;margin:10px 0}.hero p{color:var(--muted);font-size:1.08rem}.robot{background:linear-gradient(145deg,#20365d,#14213d);border:1px solid #3d5684;border-radius:28px;padding:24px;text-align:center;box-shadow:0 20px 60px #0005}.bot{font-size:100px;line-height:1.2;filter:drop-shadow(0 10px 10px #0005)}.robot .speech{background:#0d1730;border:1px solid var(--line);border-radius:16px;padding:14px;color:#dceaff}
+.btn{border:0;border-radius:12px;padding:11px 17px;font-weight:750;background:linear-gradient(100deg,var(--cyan),#86b8ff);color:#071326}.btn.secondary{background:#263654;color:var(--ink);border:1px solid var(--line)}.btn:disabled{opacity:.4;cursor:not-allowed}.nav{display:flex;gap:8px;overflow:auto;padding:12px 0 18px}.nav button{white-space:nowrap;background:#17233d;border:1px solid var(--line);color:var(--muted);padding:9px 13px;border-radius:11px}.nav button.active{background:#24436a;color:white;border-color:var(--cyan)}
+.progress{height:9px;background:#202b45;border-radius:20px;overflow:hidden;margin:10px 0 22px}.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--blue));transition:width .4s}
+.section{display:none;animation:rise .35s ease}.section.active{display:block}@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.kicker{color:var(--cyan);font-size:.78rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}.section h2{font-size:clamp(1.7rem,4vw,2.5rem);margin:5px 0}.lead{color:var(--muted);max-width:850px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin:18px 0}.card{background:linear-gradient(150deg,var(--panel),#111a2e);border:1px solid var(--line);border-radius:18px;padding:19px}.card h3{margin:0 0 8px;color:#dceaff}.card p,.card li{color:var(--muted)}.card ul{padding-left:20px}.callout{border-left:4px solid var(--gold);background:#2a2a35;padding:13px 16px;border-radius:0 12px 12px 0;margin:16px 0}.game{border:1px solid #42608f;background:linear-gradient(135deg,#1b2c4d,#172039);border-radius:20px;padding:20px;margin:22px 0}.game h3{margin-top:0;color:var(--gold)}.question{font-weight:750;margin:10px 0}.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.answer{border:1px solid #405477;background:#101a30;color:var(--ink);padding:12px;border-radius:12px;text-align:left}.answer:hover{border-color:var(--cyan)}.answer.good{border-color:var(--green);background:#163c36}.answer.bad{border-color:var(--red);background:#432432}.feedback{min-height:28px;color:var(--muted);margin:10px 0}.taskrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.tag{display:inline-block;padding:4px 9px;border-radius:8px;background:#263958;color:#d8eaff;font-size:.85rem}.mission{display:flex;gap:14px;align-items:flex-start}.mission .emoji{font-size:34px}.footer{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted)}.tiny{font-size:.88rem;color:var(--muted)}.hidden{display:none!important}.choice-list{display:grid;gap:9px}.choice-list label{display:flex;gap:10px;align-items:flex-start;background:#101a30;border:1px solid var(--line);padding:11px;border-radius:11px}.choice-list input{margin-top:6px;accent-color:var(--cyan)}.result{font-weight:750;margin-top:10px}.badge{display:inline-block;border:1px solid #6b5b31;color:var(--gold);border-radius:999px;padding:4px 10px;font-size:.85rem}.ending{text-align:center;padding:35px 20px}.ending .big{font-size:80px}.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:100}.confetti span{position:absolute;top:-20px;width:9px;height:14px;animation:fall 2.4s linear forwards}@keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.8}}.meter{display:flex;gap:5px;margin:12px 0}.meter i{height:8px;flex:1;background:#263451;border-radius:9px}.meter i.on{background:var(--green)}.map{display:flex;justify-content:space-between;gap:7px;flex-wrap:wrap;margin:20px 0}.map span{flex:1;min-width:120px;text-align:center;background:#192743;border:1px solid var(--line);border-radius:12px;padding:10px;color:var(--muted)}.map span.done{border-color:var(--green);color:var(--green)}
+@media(max-width:720px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.shell{padding:15px}.bot{font-size:75px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="top">
+    <div class="brand">🚀 BYTE<span>QUEST</span> <span style="color:#eef4ff">/ цифровая экспедиция</span></div>
+    <div class="stats"><div class="pill">⭐ Очки: <b id="score">0</b></div><div class="pill">🏆 Значки: <b id="badges">0/5</b></div><div class="pill">⏱️ План: <b>90 минут</b></div></div>
+  </header>
+  <div class="hero" id="intro">
+    <div>
+      <div class="kicker">Интерактивное занятие · 10–14 лет · 90 минут</div>
+      <h1>Робот Байт<br><span style="color:var(--cyan)">и тайны Интернета</span></h1>
+      <p>Цифровая вселенная дала сбой! Пять защитных модулей отключились. Помоги Байту пройти испытания: научись искать, проверять информацию, защищать аккаунты и общаться безопасно.</p>
+      <button class="btn" onclick="startQuest()">Начать экспедицию →</button>
+      <p class="tiny">Работайте командой или индивидуально. За верные решения начисляются очки, а за завершение испытаний — значки и конфетти.</p>
+    </div>
+    <div class="robot"><div class="bot">🤖</div><div class="speech"><b>Байт:</b> «Привет, команда! Мне нужна ваша помощь. Не спешим нажимать на всё подряд — сначала думаем, потом действуем!»</div></div>
+  </div>
+  <nav class="nav" id="nav">
+    <button class="active" data-go="0">🚀 Старт</button>
+    <button data-go="1">1. Браузер</button><button data-go="2">2. Поиск</button><button data-go="3">3. Факты</button><button data-go="4">4. Пароли</button><button data-go="5">5. Общение</button><button data-go="6">🏁 Финал</button>
+  </nav>
+  <div class="progress"><i id="progress"></i></div>
+
+  <section class="section active" id="s0">
+    <div class="kicker">Пролог · 3 минуты</div><h2>Сигнал бедствия из Киберграда</h2>
+    <p class="lead">В Киберграде погасли пять маяков. Чтобы вернуть свет, нужно восстановить пять модулей цифровой грамотности. Каждый модуль — отдельное испытание.</p>
+    <div class="grid">
+      <div class="card"><h3>🎯 Миссия команды</h3><ul><li>Понять, как работает браузер и поиск.</li><li>Научиться проверять сообщения и источники.</li><li>Защитить свои аккаунты и личные данные.</li><li>Распознавать мошенничество и безопасно общаться.</li></ul></div>
+      <div class="card"><h3>🧭 Правила экспедиции</h3><ul><li>Обсуждайте ответы и объясняйте выбор.</li><li>Ошибаться можно: ошибка — повод разобраться.</li><li>Не вводите настоящие пароли и личные данные.</li><li>В реальной жизни сомнительную ситуацию обсуждайте со взрослым, которому доверяете.</li></ul></div>
+    </div>
+    <div class="map"><span>🌐 Браузер</span><span>🔎 Поиск</span><span>🕵️ Факты</span><span>🔐 Пароли</span><span>💬 Общение</span></div>
+    <div class="callout"><b>Время занятия:</b> старт и правила — 3 мин; уровни — 15 + 15 + 20 + 15 + 17 мин; финал и рефлексия — 5 мин. Итого 90 минут.</div>
+    <button class="btn" onclick="go(1)">К первому уровню →</button>
+  </section>
+
+  <section class="section" id="s1">
+    <div class="kicker">Уровень 1 · 15 минут</div><h2>🌐 Путешествие в браузере</h2>
+    <p class="lead">Байт оказался в лабиринте сайтов. Чтобы найти выход, нужно понять, как устроено путешествие по Интернету.</p>
+    <div class="mission"><div class="emoji">🤖</div><div class="card" style="flex:1"><b>Байт:</b> «Я открыл окно, а там целый мир! Но что именно я открыл — Интернет, сайт или браузер?»</div></div>
+    <div class="grid">
+      <div class="card"><h3>Что такое Интернет?</h3><p><b>Интернет</b> — глобальная сеть, которая соединяет множество устройств и сетей. Благодаря ей компьютеры и серверы могут обмениваться данными.</p><p>Представь дороги между городами: по ним движутся посылки. В Интернете «посылками» становятся данные — текст, изображения, звук и видео.</p></div>
+      <div class="card"><h3>Что такое браузер?</h3><p><b>Браузер</b> — программа для просмотра веб-страниц. Например, Chrome, Firefox, Edge, Safari или Яндекс Браузер.</p><p>Браузер получает данные сайта и показывает их в удобном виде. Он не равен Интернету: это инструмент для работы с вебом.</p></div>
+      <div class="card"><h3>Сайт, страница и ссылка</h3><p><b>Сайт</b> — набор связанных веб-страниц под общим адресом. <b>Веб-страница</b> — отдельный документ, который открывается в браузере. <b>Ссылка</b> помогает перейти на другую страницу, файл или ресурс.</p><p>Одна страница может содержать текст, картинки, видео, кнопки и ссылки.</p></div>
+      <div class="card"><h3>Адресная строка и вкладки</h3><p><b>Адресная строка</b> показывает адрес страницы и часто позволяет сразу выполнить поиск. <b>Вкладки</b> помогают держать открытыми несколько страниц в одном окне.</p><p>Кнопки «Назад», «Вперёд» и «Обновить» помогают перемещаться по истории и перезагружать страницу.</p></div>
+    </div>
+    <div class="callout"><b>Важно:</b> замочек и HTTPS означают, что соединение с сайтом шифруется. Но это <b>не гарантия честности сайта</b>: мошеннический ресурс тоже может использовать HTTPS.</div>
+    <div class="game" id="g1">
+      <h3>🎮 Игра 1. «Кто есть кто?» · 4 минуты</h3><p class="question">Программа, с помощью которой открывают веб-страницы, — это…</p>
+      <div class="answers"><button class="answer" onclick="answer(this,false,'Интернет — сеть, а не программа для просмотра страниц.')">Интернет</button><button class="answer" onclick="answer(this,true,'Верно! Браузер отображает веб-страницы.')">Браузер</button><button class="answer" onclick="answer(this,false,'Ссылка — это переход к ресурсу.')">Ссылка</button><button class="answer" onclick="answer(this,false,'Сервер хранит или обрабатывает данные, но это не программа просмотра.')">Сервер</button></div><div class="feedback"></div>
+    </div>
+    <div class="game">
+      <h3>🧩 Игра 2. «Маршрут Байта» · 5 минут</h3><p class="question">Байт хочет открыть сайт школьной библиотеки. Расставь действия в логическом порядке — нажимай на карточки по очереди.</p>
+      <div class="taskrow" id="routeBtns"><button class="answer" onclick="routePick(2,this)">Найти нужную страницу</button><button class="answer" onclick="routePick(0,this)">Открыть браузер</button><button class="answer" onclick="routePick(3,this)">Прочитать материал</button><button class="answer" onclick="routePick(1,this)">Ввести адрес или запрос</button></div><p class="feedback" id="routeFeedback">Выбрано: <span id="routeChosen">ничего</span></p><button class="btn secondary" onclick="checkRoute()">Проверить маршрут</button><button class="btn secondary" onclick="resetRoute()">Сбросить</button>
+    </div>
+    <div class="game">
+      <h3>⚡ Быстрая проверка</h3><p class="question">Правда или ложь: если у сайта есть HTTPS и значок замка, значит ему всегда можно доверять.</p>
+      <div class="answers"><button class="answer" onclick="answer(this,false,'Ложь. HTTPS защищает соединение, но не проверяет честность владельца сайта.')">Правда</button><button class="answer" onclick="answer(this,true,'Именно! Проверяй адрес, автора и содержание сайта.')">Ложь</button></div><div class="feedback"></div>
+    </div>
+    <button class="btn" onclick="complete(1);go(2)">Модуль восстановлен — дальше →</button>
+  </section>
+
+  <section class="section" id="s2">
+    <div class="kicker">Уровень 2 · 15 минут</div><h2>🔎 Секреты поиска: как найти всё?</h2>
+    <p class="lead">Байт получил задание найти сведения о вулканах Камчатки, но поисковик выдал миллионы страниц. Нужна стратегия!</p>
+    <div class="grid">
+      <div class="card"><h3>Как работает поисковая система?</h3><p>Поисковая система помогает находить страницы в Интернете. Специальные программы обнаруживают страницы, анализируют их и добавляют сведения в поисковый индекс. По запросу система подбирает результаты, которые считает подходящими.</p><p>Поисковик не «знает всё» и не гарантирует, что первый результат самый точный или лучший.</p></div>
+      <div class="card"><h3>Сильный поисковый запрос</h3><p>Запрос — это слова, по которым система ищет подходящие материалы. Чем точнее сформулирована задача, тем легче найти полезный результат.</p><ul><li>Слишком широко: <i>вулканы</i>.</li><li>Точнее: <i>действующие вулканы Камчатки список</i>.</li><li>Для учебной задачи: <i>как образуются вулканы объяснение детям</i>.</li></ul></div>
+      <div class="card"><h3>Приёмы поиска</h3><ul><li>Используй 2–5 главных слов вместо длинного рассказа.</li><li>Добавляй место, дату, тип материала или нужную аудиторию.</li><li>Кавычки помогают искать точную фразу: <b>"Тихоокеанское огненное кольцо"</b>.</li><li>Минус перед словом может исключить нежелательную тему: <b>ягуар -автомобиль</b>.</li><li>Фильтруй результаты по дате, типу, языку или изображениям, если такие фильтры доступны.</li></ul></div>
+      <div class="card"><h3>Как выбрать результат?</h3><p>Прочитай заголовок и описание. Посмотри на адрес сайта. Открой страницу и проверь, отвечает ли она на вопрос. Сравни информацию с другими надёжными источниками.</p><p>Реклама может находиться выше обычных результатов. Обращай внимание на пометки «Реклама» или «Спонсировано».</p></div>
+    </div>
+    <div class="callout"><b>Правило поиска:</b> сформулируй вопрос → выдели ключевые слова → уточни запрос → оцени результаты → сравни источники.</div>
+    <div class="game">
+      <h3>🕵️ Игра 1. «Собери поисковый запрос» · 4 минуты</h3><p class="question">Нужно найти официальную информацию о режиме работы музея в Петропавловске-Камчатском. Какой запрос точнее?</p>
+      <div class="answers"><button class="answer" onclick="answer(this,false,'Слишком общий запрос: непонятно, какой музей и что именно нужно узнать.')">Музей</button><button class="answer" onclick="answer(this,true,'Отлично! Есть объект, город и конкретная информация.')">официальный сайт музея режим работы Петропавловск-Камчатский</button><button class="answer" onclick="answer(this,false,'Запрос не уточняет ни музей, ни город, ни нужные сведения.')">Куда сходить интересно</button><button class="answer" onclick="answer(this,false,'Слово «фото» не помогает найти часы работы.')">Красивые фотографии музеев</button></div><div class="feedback"></div>
+    </div>
+    <div class="game">
+      <h3>🧠 Игра 2. «Поисковый конструктор» · 5 минут</h3><p class="question">Выбери три уточнения, которые помогут найти материал для школьного доклада о белых медведях.</p>
+      <div class="choice-list" id="searchChoices">
+        <label><input type="checkbox" value="1"> среда обитания</label><label><input type="checkbox" value="1"> питание</label><label><input type="checkbox" value="0"> смешные картинки без пояснений</label><label><input type="checkbox" value="1"> охрана вида</label>
+      </div><button class="btn secondary" onclick="checkMulti('searchChoices',3,'Верно! Эти три аспекта помогут составить содержательный доклад.','Подумай, какие разделы нужны для научно-познавательного доклада.')">Проверить выбор</button><div class="feedback"></div>
+    </div>
+    <div class="game">
+      <h3>🎯 Игра 3. «Уточни запрос» · 3 минуты</h3><p class="question">Начальный запрос: «Java». Байт ищет именно учебник для начинающих по языку программирования Java. Как улучшить запрос?</p>
+      <div class="answers"><button class="answer" onclick="answer(this,false,'Так запрос остаётся слишком коротким и неоднозначным.')">Java</button><button class="answer" onclick="answer(this,true,'Верно: тема, тип материала и уровень аудитории заданы явно.')">Java учебник для начинающих основы программирования</button><button class="answer" onclick="answer(this,false,'Запрос про напиток, а не про программирование.')">кофе Java купить</button><button class="answer" onclick="answer(this,false,'Слово «интересное» не уточняет учебную задачу.')">Интересное в Интернете</button></div><div class="feedback"></div>
+    </div>
+    <button class="btn" onclick="complete(2);go(3)">Поисковый модуль восстановлен →</button>
+  </section>
+
+  <section class="section" id="s3">
+    <div class="kicker">Уровень 3 · 20 минут</div><h2>🕵️ Как отличить правду от выдумки?</h2>
+    <p class="lead">В цифровом городе распространяется странная новость: «Завтра Интернет отключат навсегда!» Байт хочет понять, где факт, а где выдумка.</p>
+    <div class="grid">
+      <div class="card"><h3>Факт, мнение и предположение</h3><p><b>Факт</b> — утверждение, которое можно проверить по доказательствам.</p><p><b>Мнение</b> — личная оценка: «Этот фильм самый интересный».</p><p><b>Предположение</b> — версия, которая пока не подтверждена: «Возможно, завтра будет дождь».</p><p>Мнение не обязательно плохое, но его нельзя выдавать за доказанный факт.</p></div>
+      <div class="card"><h3>Что такое фейк?</h3><p><b>Фейк</b> — ложная или вводящая в заблуждение информация, которую распространяют как настоящую. Иногда ошибка появляется случайно, а иногда публикация специально создана для обмана.</p><p>Фейком может быть текст, фотография, видео, аудиозапись или поддельный скриншот.</p></div>
+      <div class="card"><h3>Тревожные признаки</h3><ul><li>Кричащий заголовок: «СРОЧНО! СКРЫВАЮТ ОТ ВСЕХ!»</li><li>Нет автора, даты или ссылок на доказательства.</li><li>Просят немедленно переслать всем знакомым.</li><li>Одна и та же новость не подтверждается другими надёжными источниками.</li><li>Изображение не соответствует событию или вырвано из контекста.</li></ul></div>
+      <div class="card"><h3>Проверка по шагам</h3><ol><li>Остановись: не пересылай сразу.</li><li>Найди первоисточник — кто сообщил первым?</li><li>Проверь автора, дату и контекст.</li><li>Сравни с несколькими независимыми надёжными источниками.</li><li>Проверь фото и видео: где и когда они были сделаны?</li><li>Отдели подтверждённое от предположений.</li></ol></div>
+    </div>
+    <div class="callout"><b>Запомни:</b> большое количество лайков не доказывает правдивость. Красивый дизайн сайта тоже не является доказательством.</div>
+    <div class="game">
+      <h3>📰 Игра 1. «Факт или мнение?» · 5 минут</h3><p class="question">«Мне кажется, изучать космос интереснее, чем изучать океан». Это…</p>
+      <div class="answers"><button class="answer" onclick="answer(this,false,'Это личная оценка, а не проверяемый факт.')">Проверенный факт</button><button class="answer" onclick="answer(this,true,'Верно! Слова «мне кажется» показывают личное мнение.')">Мнение</button><button class="answer" onclick="answer(this,false,'Здесь не предсказывают будущее, а выражают оценку.')">Точное предсказание</button><button class="answer" onclick="answer(this,false,'Это не инструкция и не правило поведения.')">Инструкция</button></div><div class="feedback"></div>
+    </div>
+    <div class="game">
+      <h3>🚨 Игра 2. «Новость или ловушка?» · 6 минут</h3><p class="question">В чате появилось сообщение: «Сенсация! Учёные доказали, что обычная вода через неделю станет опасной. Перешли всем, пока не удалили!» Что лучше сделать?</p>
+      <div class="answers"><button class="answer" onclick="answer(this,false,'Пересылка ускорит распространение непроверенной информации.')">Сразу переслать друзьям</button><button class="answer" onclick="answer(this,true,'Правильно: не распространять, найти первоисточник и проверить у надёжных научных или официальных источников.')">Не пересылать и проверить источник</button><button class="answer" onclick="answer(this,false,'Эмоциональный заголовок сам по себе не подтверждает новость.')">Поверить, потому что написано «учёные доказали»</button><button class="answer" onclick="answer(this,false,'Количество просмотров не является доказательством.')">Оценить правдивость по числу пересылок</button></div><div class="feedback"></div>
+    </div>
+    <div class="game">
+      <h3>🔬 Игра 3. «Детектив источников» · 5 минут</h3><p class="question">Для доклада о землетрясениях какой источник разумнее взять за основу?</p>
+      <div class="answers"><button class="answer" onclick="answer(this,false,'Анонимный пост без ссылок нельзя надёжно проверить.')">Анонимный пост в комментариях</button><button class="answer" onclick="answer(this,true,'Научное или официальное учреждение обычно указывает авторов, данные и методику. Всё равно проверяй дату и контекст.')">Материал научного учреждения с автором и ссылками</button><button class="answer" onclick="answer(this,false,'Рекламная публикация может быть полезна для знакомства с продуктом, но не лучший базовый источник научных сведений.')">Рекламный баннер с громким обещанием</button><button class="answer" onclick="answer(this,false,'Скриншот без ссылки на оригинал и даты трудно проверить.')">Скриншот неизвестного происхождения</button></div><div class="feedback"></div>
+    </div>
+    <div class="game">
+      <h3>🧩 Игра 4. «Пауза перед репостом» · 4 минуты</h3><p class="question">Отметь все разумные действия перед распространением важной новости.</p>
+      <div class="choice-list" id="factChoices"><label><input type="checkbox" value="1"> Проверить дату публикации</label><label><input type="checkbox" value="1"> Найти первоисточник</label><label><input type="checkbox" value="0"> Переслать, пока новость не удалили</label><label><input type="checkbox" value="1"> Сравнить с независимыми источниками</label></div>
+      <button class="btn secondary" onclick="checkMulti('factChoices',3,'Отличная работа! Ты проверяешь информацию, а не усиливаешь слух.','Нужны действия, которые помогают установить происхождение и достоверность новости.')">Проверить</button><div class="feedback"></div>
+    </div>
+    <button class="btn" onclick="complete(3);go(4)">Детективный модуль восстановлен →</button>
+  </section>
+
+  <section class="section" id="s4">
+    <div class="kicker">Уровень 4 · 15 минут</div><h2>🔐 Мой цифровой замок: пароли и безопасность</h2>
+    <p class="lead">Байт нашёл дверь в центральный архив. На ней цифровой замок. Нужно понять, как защищать свои аккаунты и данные.</p>
+    <div class="grid">
+      <div class="card"><h3>Что защищает пароль?</h3><p>Пароль подтверждает, что доступ к аккаунту пытается получить его владелец. Если пароль простой или повторяется на разных сайтах, риск потерять доступ выше.</p><p>Не используй имя, дату рождения, кличку питомца или последовательности вроде 123456. Не сообщай пароль друзьям и не отправляй его в чат.</p></div>
+      <div class="card"><h3>Надёжная парольная фраза</h3><p>Длинная уникальная фраза обычно лучше короткого и предсказуемого пароля. Для каждого важного сервиса нужен отдельный пароль.</p><p>Можно использовать менеджер паролей — специальную программу для безопасного хранения уникальных паролей. Главный пароль менеджера должен быть особенно надёжным.</p></div>
+      <div class="card"><h3>Два уровня защиты</h3><p><b>Двухфакторная аутентификация (2FA)</b> добавляет второй способ подтверждения входа: например, приложение-аутентификатор или ключ безопасности.</p><p>Даже если пароль стал известен постороннему, второй фактор может помешать ему войти. Никому не сообщай коды подтверждения.</p></div>
+      <div class="card"><h3>Личные данные</h3><p>ФИО, адрес, номер телефона, школа, расписание, геолокация, фотографии документов и коды входа могут помочь посторонним узнать о тебе слишком много.</p><p>Перед публикацией спроси себя: «Может ли эта информация навредить мне или близким? Нужно ли всем это знать?» Настройки приватности помогают ограничить аудиторию, но не отменяют осторожность.</p></div>
+    </div>
+    <div class="callout"><b>Никогда не делай:</b> не отправляй пароль или код подтверждения в переписке, не вводи их по ссылке из неожиданного сообщения и не используй один пароль для всех сервисов.</div>
+    <div class="game">
+      <h3>🔑 Игра 1. «Выбери защиту» · 5 минут</h3><p class="question">Какой вариант лучше подходит для защиты нескольких аккаунтов?</p>
+      <div class="answers"><button class="answer" onclick="answer(this,false,'Один пароль на все сайты опасен: утечка на одном сервисе ставит под угрозу остальные.')">Один знакомый пароль везде</button><button class="answer" onclick="answer(this,true,'Верно: уникальные длинные пароли и второй фактор заметно повышают защиту.')">Уникальные длинные пароли и 2FA</button><button class="answer" onclick="answer(this,false,'Короткие пароли легко угадать или подобрать.')">Короткий пароль, который легко помнить</button><button class="answer" onclick="answer(this,false,'Пароль, записанный на видном месте, может стать доступен другим.')">Пароль на стикере возле компьютера</button></div><div class="feedback"></div>
+    </div>
+    <div class="game">
+      <h3>🧱 Игра 2. «Что можно публиковать?» · 5 минут</h3><p class="question">Выбери сведения, которыми обычно безопаснее делиться публично, если они не раскрывают личность или местоположение.</p>
+      <div class="choice-list" id="privacyChoices"><label><input type="checkbox" value="1"> Рисунок собственного вымышленного персонажа</label><label><input type="checkbox" value="0"> Фото пропуска с личными данными</label><label><input type="checkbox" value="0"> Точный домашний адрес</label><label><input type="checkbox" value="1"> Отзыв о любимой книге без личных сведений</label></div>
+      <button class="btn secondary" onclick="checkMulti('privacyChoices',2,'Да! Творчеством и общими интересами делиться безопаснее, если не раскрывать личные сведения.','Подумай, какие варианты не раскрывают документы, адрес или точное местоположение.')">Проверить выбор</button><div class="feedback"></div>
+    </div>
+    <div class="game">
+      <h3>🧠 Игра 3. «Секретный код» · 3 минуты</h3><p class="question">Тебе пришло сообщение: «Назови код из SMS, иначе аккаунт заблокируют». Как поступить?</p>
+      <div class="answers"><button class="answer" onclick="answer(this,false,'Код подтверждения — секрет. Его нельзя сообщать другим людям.')">Отправить код, чтобы спасти аккаунт</button><button class="answer" onclick="answer(this,true,'Правильно: не отвечать, не передавать код и самостоятельно проверить аккаунт через официальное приложение или сайт.')">Не сообщать код и проверить аккаунт официальным способом</button><button class="answer" onclick="answer(this,false,'Даже если собеседник знает твоё имя, это не доказывает его полномочия.')">Спросить у отправителя, кто он</button><button class="answer" onclick="answer(this,false,'Пересылать код знакомым также небезопасно.')">Переслать код другу для проверки</button></div><div class="feedback"></div>
+    </div>
+    <button class="btn" onclick="complete(4);go(5)">Цифровой замок закрыт надёжно →</button>
+  </section>
+
+  <section class="section" id="s5">
+    <div class="kicker">Уровень 5 · 17 минут</div><h2>💬 Осторожно, мошенники! Общение в сети</h2>
+    <p class="lead">Байт подключился к игровому чату. Там появились незнакомцы, подарки, подозрительные ссылки и просьбы. Команда должна помочь ему общаться безопасно.</p>
+    <div class="grid">
+      <div class="card"><h3>Что такое фишинг?</h3><p><b>Фишинг</b> — попытка обманом получить пароли, коды, данные карты или другую личную информацию. Мошенник может притвориться поддержкой сервиса, знакомым, магазином или организатором конкурса.</p><p>Признаки: срочность, угрозы блокировкой, обещание невероятного подарка, странный адрес сайта, просьба назвать пароль или код.</p></div>
+      <div class="card"><h3>Поддельные ссылки и сообщения</h3><p>Название ссылки может выглядеть знакомо, но вести на другой сайт. Проверяй адрес внимательно, особенно доменное имя. Не открывай неожиданные вложения и не устанавливай программы по просьбе незнакомца.</p><p>Если сомневаешься — не переходи по ссылке. Открой официальный сайт самостоятельно через знакомый адрес или приложение.</p></div>
+      <div class="card"><h3>Безопасное общение</h3><ul><li>Не сообщай незнакомцам адрес, школу, телефон, расписание и место, где находишься.</li><li>Не соглашайся на встречу с интернет-знакомым без участия родителей или доверенного взрослого.</li><li>Не отправляй личные фото и документы по просьбе незнакомца.</li><li>Если собеседник давит, угрожает или просит хранить секрет — прекрати общение и расскажи взрослому.</li></ul></div>
+      <div class="card"><h3>Что делать при подозрении на обман?</h3><ol><li>Остановись: не отвечай и не переходи по ссылкам.</li><li>Не отправляй деньги, пароли, коды или документы.</li><li>Сохрани сообщение или сделай скриншот, если это безопасно.</li><li>Заблокируй и пожалуйся на аккаунт через инструменты платформы.</li><li>Расскажи родителю, педагогу или другому доверенному взрослому.</li><li>Если уже ввёл пароль — сообщи взрослому и смени его через официальный сайт; проверь активные сеансы и включи 2FA.</li></ol></div>
+    </div>
+    <div class="callout"><b>Правило трёх НЕ:</b> НЕ торопись, НЕ сообщай секреты, НЕ переходи по сомнительным ссылкам. Если что-то тревожит — обратись за помощью.</div>
+    <div class="game">
+      <h3>🎣 Игра 1. «Поймай фишинг» · 5 минут</h3><p class="question">Сообщение: «Вы выиграли редкий игровой предмет! Заберите за 2 минуты. Введите пароль от аккаунта по ссылке». Что это напоминает?</p>
+      <div class="answers"><button class="answer" onclick="answer(this,true,'Да! Срочность, подарок и запрос пароля — характерные признаки фишинга.')">Попытку фишинга</button><button class="answer" onclick="answer(this,false,'Настоящие уведомления не должны просить отправлять пароль в сообщении.')">Обычное безопасное уведомление</button><button class="answer" onclick="answer(this,false,'Для получения подарка не требуется сообщать пароль посторонним.')">Обязательную проверку аккаунта</button><button class="answer" onclick="answer(this,false,'У сообщения есть явные признаки обмана.')">Официальное подтверждение победы</button></div><div class="feedback"></div>
+    </div>
+    <div class="game">
+      <h3>💬 Игра 2. «Ответь безопасно» · 5 минут</h3><p class="question">Незнакомец в игровом чате пишет: «Скинь номер телефона, я добавлю тебя в закрытую команду». Какой ответ безопаснее?</p>
+      <div class="answers"><button class="answer" onclick="answer(this,false,'Номер телефона — личные данные. Не нужно отдавать их незнакомцу.')">«Конечно, вот мой номер»</button><button class="answer" onclick="answer(this,true,'Верно: не делиться личными данными. Можно отказаться и сообщить взрослому, если собеседник настаивает.')">«Я не делюсь личными данными с незнакомыми людьми»</button><button class="answer" onclick="answer(this,false,'Даже временный номер или чужой контакт не решает проблему безопасного общения.')">«Дам номер друга»</button><button class="answer" onclick="answer(this,false,'Не стоит переходить в личный разговор, если для этого просят раскрыть данные.')">«Напиши мне в личные сообщения, там решим»</button></div><div class="feedback"></div>
+    </div>
+    <div class="game">
+      <h3>🚦 Игра 3. «Светофор общения» · 5 минут</h3><p class="question">Определи, как поступить в ситуации: знакомый аккаунт прислал неожиданное сообщение «Я потерял доступ, срочно отправь мне код, который сейчас придёт на твой телефон».</p>
+      <div class="answers"><button class="answer" onclick="answer(this,false,'Даже знакомый аккаунт мог быть взломан. Коды никому не сообщают.')">🟢 Зелёный — отправить код</button><button class="answer" onclick="answer(this,true,'Верно: красный сигнал. Не отправлять код; связаться с человеком другим, проверенным способом и сообщить взрослому.')">🔴 Красный — не отправлять код и проверить другим способом</button><button class="answer" onclick="answer(this,false,'Жёлтый не означает, что код можно переслать. Секретный код нельзя передавать.')">🟡 Жёлтый — отправить только часть кода</button><button class="answer" onclick="answer(this,false,'Не нужно пересылать код даже в общий чат.')">🟢 Зелёный — спросить в общем чате</button></div><div class="feedback"></div>
+    </div>
+    <button class="btn" onclick="complete(5);go(6)">Последний модуль восстановлен — к финалу! →</button>
+  </section>
+
+  <section class="section" id="s6">
+    <div class="kicker">Финал · 5 минут</div><h2>🏁 Последнее испытание: спасение Киберграда</h2>
+    <p class="lead">Все пять маяков почти восстановлены. Осталось пройти финальную проверку и дать Байту пять правил цифрового путешественника.</p>
+    <div class="game">
+      <h3>🏆 Финальный блиц</h3><div id="finalQuiz">
+        <div class="question" id="fq">1/5. Как поступить, если сайт неожиданно просит пароль после перехода из сообщения?</div>
+        <div class="answers" id="fa"></div><div class="feedback" id="ff"></div>
+        <button class="btn secondary hidden" id="nextFinal" onclick="nextFinalQ()">Следующий вопрос →</button>
+      </div>
+      <div id="finalResult" class="hidden ending"><div class="big">🏆</div><h2>Киберград спасён!</h2><p id="finalText"></p><div class="badge">СЕРТИФИКАТ: ЗАЩИТНИК ЦИФРОВОГО МИРА</div><p>Байт благодарит команду за внимательность, смелость думать и умение проверять информацию.</p><button class="btn" onclick="confetti(160)">🎉 Ещё немного конфетти!</button></div>
+    </div>
+    <div class="card"><h3>📌 Пять правил, которые забираем с собой</h3><ol><li>Браузер — инструмент, Интернет — сеть, сайт — набор веб-страниц.</li><li>Точный запрос помогает найти полезную информацию.</li><li>Важные сведения нужно проверять по источникам и доказательствам.</li><li>Пароли должны быть уникальными; коды подтверждения — секрет.</li><li>Не торопись, не делись личными данными и обращайся за помощью при подозрительных ситуациях.</li></ol></div>
+    <div class="card" style="margin-top:15px"><h3>💭 Рефлексия «Одно открытие»</h3><p>Предложи ученикам закончить одну фразу:</p><ul><li>«Сегодня я понял(а), что…»</li><li>«Теперь я буду внимательнее к…»</li><li>«Если я увижу подозрительное сообщение, то…»</li></ul><p class="tiny">Для преподавателя: попросите каждого назвать одно правило, которое он применит в реальной жизни. Не просите показывать личные переписки или пароли.</p></div>
+  </section>
+  <div class="footer"><span>🤖 Робот Байт · Учимся безопасно исследовать Интернет</span><span id="footerStatus">Пройдено уровней: 0 из 5</span></div>
+</div>
+<div class="confetti" id="confetti"></div>
+<script>
+let score=0, completed=new Set(), current=0, route=[], finalIndex=0, finalCorrect=0;
+const sections=[...document.querySelectorAll('.section')], nav=[...document.querySelectorAll('.nav button')];
+function updateStats(){document.getElementById('score').textContent=score;document.getElementById('badges').textContent=completed.size+'/5';document.getElementById('footerStatus').textContent='Пройдено уровней: '+completed.size+' из 5';document.getElementById('progress').style.width=(completed.size/5*100)+'%';}
+function startQuest(){document.getElementById('intro').classList.add('hidden');go(1)}
+function go(n){current=n;sections.forEach((s,i)=>s.classList.toggle('active',i===n));nav.forEach((b,i)=>b.classList.toggle('active',i===n));window.scrollTo({top:0,behavior:'smooth'});}
+nav.forEach(b=>b.addEventListener('click',()=>{let n=Number(b.dataset.go);if(n===6&&completed.size<5){alert('Сначала пройди все пять уровней!');return;}if(n>0&&n<6&&!completed.has(n)&&n>1&&!completed.has(n-1)){alert('Сначала заверши предыдущий уровень.');return;}if(n===0)document.getElementById('intro').classList.remove('hidden');else document.getElementById('intro').classList.add('hidden');go(n)}));
+function confetti(count=75){const root=document.getElementById('confetti');for(let i=0;i<count;i++){let p=document.createElement('span');p.style.left=Math.random()*100+'%';p.style.background=['#5de1e6','#ffd166','#75e0a2','#ff8292','#9b8cff'][i%5];p.style.animationDelay=Math.random()*.7+'s';p.style.transform='rotate('+Math.random()*360+'deg)';root.appendChild(p);setTimeout(()=>p.remove(),3200);}}
+function answer(btn,ok,msg){let game=btn.closest('.game');if(!game)return;let buttons=game.querySelectorAll('.answer');buttons.forEach(b=>b.disabled=true);btn.classList.add(ok?'good':'bad');let fb=game.querySelector('.feedback');if(fb)fb.textContent=(ok?'✨ Верно! ':'Попробуй ещё раз в следующий раз. ')+msg;if(ok){score+=10;updateStats();confetti(35)}}
+function complete(n){if(!completed.has(n)){completed.add(n);score+=20;updateStats();confetti(110);}}
+function routePick(n,btn){if(route.length>=4)return;route.push(n);btn.disabled=true;document.getElementById('routeChosen').textContent=route.map(x=>['Открыть браузер','Ввести адрес или запрос','Найти нужную страницу','Прочитать материал'][x]).join(' → ')}
+function checkRoute(){let f=document.getElementById('routeFeedback');if(route.join(',')==='0,1,2,3'){f.textContent='Отлично! Маршрут выстроен правильно. +10 очков';score+=10;updateStats();confetti(45)}else f.textContent='Порядок пока неверный. Подумай: сначала нужен инструмент, затем адрес или запрос.'}
+function resetRoute(){route=[];document.querySelectorAll('#routeBtns button').forEach(b=>b.disabled=false);document.getElementById('routeChosen').textContent='ничего';document.getElementById('routeFeedback').textContent='Выбрано: ничего'}
+function checkMulti(id,total,good,bad){let game=document.getElementById(id).closest('.game'),checks=[...document.querySelectorAll('#'+id+' input')],selected=checks.filter(c=>c.checked),right=checks.filter(c=>c.value==='1');let ok=selected.length===right.length&&selected.every(c=>c.value==='1');let fb=game.querySelector('.feedback');fb.textContent=ok?'✨ '+good:bad+' Правильных вариантов: '+right.length+'.';if(ok){score+=10;updateStats();confetti(40)}}
+const fq=[
+{q:'1/5. Сайт из неожиданного сообщения просит пароль. Что делать?',a:['Ввести пароль, если страница выглядит красиво','Закрыть страницу и открыть официальный сайт самостоятельно','Отправить пароль автору сообщения','Попросить друга ввести пароль'],c:1,e:'Не переходи по подозрительной ссылке. Открой сервис самостоятельно через официальный адрес или приложение.'},
+{q:'2/5. Как проверить громкую новость?',a:['Посмотреть только количество лайков','Сразу переслать знакомым','Найти первоисточник и сравнить с независимыми надёжными источниками','Оценить по яркой картинке'],c:2,e:'Источник, дата, доказательства и независимые подтверждения помогают оценить достоверность.'},
+{q:'3/5. Что лучше для нескольких аккаунтов?',a:['Один пароль на все сайты','Уникальные пароли и двухфакторная защита','Имя и год рождения','Один короткий пароль с восклицательным знаком'],c:1,e:'Уникальные пароли ограничивают последствия утечки, а 2FA добавляет дополнительный уровень защиты.'},
+{q:'4/5. Незнакомец просит прислать код из SMS. Как поступить?',a:['Не сообщать код и рассказать взрослому при подозрении на обман','Отправить код, если он обещает подарок','Отправить только последние цифры','Опубликовать код в чате'],c:0,e:'Код подтверждения — секрет. Его нельзя передавать другим людям.'},
+{q:'5/5. Что точнее всего описывает браузер?',a:['Глобальная сеть устройств','Программа для просмотра веб-страниц','Любая страница в Интернете','Поисковый запрос'],c:1,e:'Браузер — программа, которая помогает открывать и отображать веб-страницы.'}
+];
+function renderFinal(){let q=fq[finalIndex];document.getElementById('fq').textContent=q.q;let area=document.getElementById('fa');area.innerHTML='';q.a.forEach((t,i)=>{let b=document.createElement('button');b.className='answer';b.textContent=t;b.onclick=()=>{[...area.children].forEach(x=>x.disabled=true);let ok=i===q.c;b.classList.add(ok?'good':'bad');if(ok){finalCorrect++;score+=10;confetti(35)}document.getElementById('ff').textContent=(ok?'Верно! ':'Не совсем. ')+q.e;document.getElementById('nextFinal').classList.remove('hidden')};area.appendChild(b)});document.getElementById('ff').textContent='';document.getElementById('nextFinal').classList.add('hidden')}
+function nextFinalQ(){finalIndex++;if(finalIndex<fq.length){renderFinal();return;}document.getElementById('finalQuiz').classList.add('hidden');let r=document.getElementById('finalResult');r.classList.remove('hidden');document.getElementById('finalText').textContent='В финальном испытании: '+finalCorrect+' из 5. Всего набрано очков: '+score+'. '+(finalCorrect===5?'Безупречная работа!':'Главное — ты знаешь, где искать помощь и как действовать осторожно. Повтори правила, которые вызвали вопросы.');confetti(180);updateStats()}
+renderFinal();updateStats();
+</script>
+</body>
+</html>
